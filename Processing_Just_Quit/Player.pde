@@ -1,10 +1,13 @@
 class Player {
   // Position & movement variables
   PVector position;
-  PVector velocity = new PVector(5, 5);
+  PVector velocity = new PVector(2, 5);
   boolean left = false;
   boolean right = false;
+  boolean jump_slam = false;
   boolean slam = false;
+  int ground_limit = 350; // Ground is drawn at 315
+  float grav_acceleration = 0.1; // This is our gravitational acceleration to start pulling our player down to the ground
 
   // Cooldown & I frames \\
   float i_frames_left = 0;
@@ -52,7 +55,33 @@ class Player {
 
 
   void move() {
-    newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 2); // Animate out player sprite
+    // Used the processing documentation on scale() and pushMatrix() to understand these
+    
+    if (right){
+      position.x += velocity.x; // Aaand we move!
+      
+      // Resets sprite scale
+      pushMatrix();
+      scale(1, 1);
+      position.x = abs(position.x); // Makes sure that the position is reset
+      newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 2); // Animate out player sprite right
+      popMatrix();
+      
+    } else if (left){
+      position.x += velocity.x; // Since we flip the scale later on we're still technacly moving 'right'
+      // Flips sprite when your moving left
+      pushMatrix();
+      scale(-1, 1);
+      position.x = -abs(position.x);
+      newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 2); // Animate out player sprite right
+      popMatrix();
+      
+      //println(position.x);
+    } else {
+      newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 1); // Animate out player sprite right
+    }// close animation if's
+    
+    
     
   } // Close move func
 
@@ -61,6 +90,7 @@ class Player {
 
   // open newAnimation
   void newAnimation(PImage sprite_sheet, PVector sprite_size, PVector start_cell, int fps, PVector target_pos, int frames) {
+    
     // takes the sprite_sheet, how big the sprites are, what cell we start at, the fps (potentially the right term?) 
     // and how many frames are in the animation
     

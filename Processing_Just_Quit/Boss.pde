@@ -7,7 +7,7 @@ class Boss{
   
   // Health bar variables
   int health = 10;
-  PVector bar_pos = new PVector(320, 400);
+  PVector bar_pos = new PVector(320, 425);
   PImage health_back;
   PImage health_fill;
   PImage health_outline;

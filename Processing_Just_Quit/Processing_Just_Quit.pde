@@ -17,7 +17,7 @@ void draw(){
   fill(82, 166, 93);
   rectMode(CORNERS);
   noStroke();
-  rect(1, 350, width, height);
+  rect(0, 350, width, height);
   
   player.display();
   boss.display();

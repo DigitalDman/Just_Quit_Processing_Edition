@@ -6,7 +6,7 @@ class Player {
   boolean right = false;
   boolean jump_slam = false;
   boolean slam = false;
-  int ground_limit = 350; // Ground is drawn at 315
+  int ground_limit = 325; // Ground is drawn at 315
   float grav_acceleration = 0.1; // This is our gravitational acceleration to start pulling our player down to the ground
 
   // Cooldown & I frames \\
@@ -56,7 +56,7 @@ class Player {
 
   void move() {
     // Used the processing documentation on scale() and pushMatrix() to understand these
-    
+    /// Left & right movement
     if (right){
       position.x += velocity.x; // Aaand we move!
       
@@ -83,6 +83,23 @@ class Player {
     
     
     
+    // Gravity
+    position.y += velocity.y; // Pull the player down (or shoot em up depending on if you jump or not)
+    velocity.y += grav_acceleration; // And this is where we pull down the player
+    
+    
+    
+    
+    // Limits
+    position.y = constrain(position.y, 0, ground_limit);
+    if (right){
+      position.x = constrain(position.x, 0, width - 30 ); // -30 & +30 since our sprites are 30x30
+    } else if (left) {
+      position.x = constrain(position.x, 0, -width + 30 ); 
+    } // Close x-limit sets
+    
+    //println(position.x);
+
   } // Close move func
 
 

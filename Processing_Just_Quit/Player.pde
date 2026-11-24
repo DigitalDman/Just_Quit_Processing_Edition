@@ -36,7 +36,8 @@ class Player {
 
 
   void display() {
-
+    move();
+    
     // Display the timer \\
     fill(0);
     circle(clock_position.x, clock_position.y, clock_radius + 2); // Circle & rect to actually look like a clock
@@ -51,22 +52,21 @@ class Player {
 
 
   void move() {
+    newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 2); // Animate out player sprite
+    
   } // Close move func
 
 
 
 
   // open newAnimation
-  void newAnimation(PImage sprite_sheet, PVector sprite_size, PVector start_cell, PVector col_row, int fps, PVector target_pos, int frames) {
-    /*
-    Creates a copy of sprite sheet & snips out part of it
-     The 1st 2 peramiters are the top-left corner of what I cut out of the sprite sheet
-     The 2nd 2 peramiters are how big the rectangle I cut is
-     The 3rd set of peramiters is where I paste the cut image on my screen
-     The final set of peramiters are how big I want the paste to be
-     */
+  void newAnimation(PImage sprite_sheet, PVector sprite_size, PVector start_cell, int fps, PVector target_pos, int frames) {
+    // takes the sprite_sheet, how big the sprites are, what cell we start at, the fps (potentially the right term?) 
+    // and how many frames are in the animation
     
-    int collum = int(col_row.x) - 1;
+    int collum = int(start_cell.x); // Lable what collum we're at
+    
+    // Update the frame depending on the fps variable
     if (frameCount % fps == 0) {
       //println(spritesheet_row_col);
       spritesheet_row_col.x += 1;
@@ -82,6 +82,13 @@ class Player {
       int(sprite_size.x), int(sprite_size.y),
       int(target_pos.x), int(target_pos.y),
       int(sprite_size.x), int(sprite_size.y) );
+     /*
+    Creates a copy of sprite sheet & snips out part of it
+     The 1st 2 peramiters are the top-left corner of what I cut out of the sprite sheet
+     The 2nd 2 peramiters are how big the rectangle I cut is
+     The 3rd set of peramiters is where I paste the cut image on my screen
+     The final set of peramiters are how big I want the paste to be
+     */
     
   } // close Split Sprites func
 } // close player class

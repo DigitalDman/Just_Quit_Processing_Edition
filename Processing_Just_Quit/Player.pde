@@ -148,8 +148,8 @@ class Player {
     // and how many frames are in the animation
     println(target_pos);
     PVector center_pos = target_pos.copy();
-    center_pos.x += sprite_size.x / 2;
-    center_pos.y += sprite_size.y / 2;
+    center_pos.x -= sprite_size.x / 2;
+    center_pos.y -= sprite_size.y / 2;
     
     
     int collum = int(start_cell.x); // Lable what collum we're at
@@ -177,9 +177,13 @@ class Player {
      The 3rd set of peramiters is where I paste the cut image on my screen
      The final set of peramiters are how big I want the paste to be
      */
+     
+     /*
      rectMode(CENTER);
      fill(0);
-    rect( center_pos.x, center_pos.y, 2, 2);
+    rect( target_pos.x, target_pos.y, 2, 2);
+    fill(255);
+    rect( center_pos.x, center_pos.y, 2, 2); // */
     
   } // close Split Sprites func
 } // close player class

@@ -52,11 +52,18 @@ void keyPressed() {
 } // Close keyPressed
 
 void keyReleased() {
-  // Only reset the left & right movement if its not a jump button you let go of
-  if (key != ' ' && key != '1') {
-    player.left = false;
-    player.right = false;
-  } // close reset if
+  // Use a switch to reset the left & right movement
+  switch (key){
+    case 'D':
+    case 'd':
+      player.right = false;
+      break;
+  
+    case 'A':
+    case 'a':
+      player.left = false;
+      break;
+  } // close switch
   
   if (space_hit){
     space_hit = false;

@@ -20,12 +20,16 @@ class Player {
   // Clock variables
   float arc_start = -90;
   float arc_end = 270;
-  PVector clock_position = new PVector(50, 70);
+  PVector clock_position = new PVector(32, 70);
   float clock_radius = 25;
 
   // Spritesheet variables
   PImage player_spritesheet;
   PVector spritesheet_row_col = new PVector(0, 0); // Saving the row & collum of the sprite sheet in a PVector
+  
+  // Health
+  int health = 5;
+  PImage heart;
 
   Player(PVector pos) {
     position = pos; // set player position
@@ -34,8 +38,9 @@ class Player {
     total_i_frames = 0.3 * frameRate; // So we have 0.3 seconds of I frames
     cooldown_length = 5 * frameRate;
     cooldown = cooldown_length;
-
+  
     player_spritesheet = loadImage("Player_Animations.png");
+    heart = loadImage("Player_Heart.png");
   } // Close constructor
 
 
@@ -52,6 +57,13 @@ class Player {
     cooldown -= 1; // Increase time by 1 per frame
     arc_start = map(cooldown, cooldown_length, 0, -90, 270 ); // Mapping its angle between -90 & 270 to hope it will 'fill'
     arc(clock_position.x, clock_position.y, clock_radius, clock_radius, radians(arc_start), radians(arc_end) ); // Draw the circle arc
+    
+    
+    /// Display health \\\
+    // Lets use a for loop for this
+    for (int i = 0; i < health; i += 1){
+      image( heart, 32 + (32 * i), 32, 32, 32 ); // Scaleing down to 32x32 since 64x64 is way too big for what I want
+    } // close hp for loop
   } // close display func
 
 
@@ -103,8 +115,7 @@ class Player {
            reset the slam cooldown
            Set the slam variable to true
         */
-      
-        grav_acceleration = 2;
+        grav_acceleration *= 50;
         cooldown = cooldown_length;
         slam = true;
       } // Close slam attack if
@@ -136,8 +147,6 @@ class Player {
     } // Close x-limit sets */
     
     //println(position.x);
-    
-    resetMatrix(); // Just doing this at the bottom so we dont overflow the push
   } // Close move func
   ////////////////////////////////////////////////////////////////////////
   // Literally just did this because my sleep deprived brain needed to break up the lines more visually

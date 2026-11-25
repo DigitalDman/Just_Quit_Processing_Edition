@@ -6,7 +6,7 @@ class Player {
   boolean right = false;
   boolean jump_slam = false;
   boolean slam = false;
-  int ground_limit = 325; // Ground is drawn at 315
+  int ground_limit = 340; // Ground is drawn at 315
   float grav_acceleration = 0.1; // This is our gravitational acceleration to start pulling our player down to the ground
   int jump_velocity = -4;
 
@@ -62,11 +62,11 @@ class Player {
       position.x += velocity.x; // Aaand we move!
       
       // Resets sprite scale
-      //pushMatrix();
-      //scale(1, 1);
-      //position.x = abs(position.x); // Makes sure that the position is reset
+      pushMatrix();
+      scale(1, 1);
+      position.x = abs(position.x); // Makes sure that the position is reset
       newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 2); // Animate out player sprite right
-      //popMatrix();
+      popMatrix();
       
     } else if (left){
       position.x += velocity.x; // Since we flip the scale later on we're still technacly moving 'right'
@@ -80,7 +80,7 @@ class Player {
       
       //println(position.x);
     } else {
-      //scale(1, 1);
+      scale(1, 1);
       position.x = abs(position.x);
       newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 100000, position, 2); // Animate out player sprite right
       // Yea so the 100000 thing is 
@@ -104,7 +104,7 @@ class Player {
            Set the slam variable to true
         */
       
-        grav_acceleration = 0.5;
+        grav_acceleration = 2;
         cooldown = cooldown_length;
         slam = true;
       } // Close slam attack if
@@ -128,13 +128,16 @@ class Player {
     
     //*
     if (right){
-      position.x = constrain(position.x, 0, width - 30 ); // -30 & +30 since our sprites are 30x30
+      position.x = constrain(position.x, 0, width - 15 ); // -30 & +30 since our sprites are 30x30
+      //println("RIGHT");
     } else if (left) {
-      position.x = constrain(position.x, -width, 0 - 30 ); 
+      position.x = constrain(position.x, -width, 0 - 15 ); 
+      //println("LEFT");
     } // Close x-limit sets */
     
     //println(position.x);
-
+    
+    resetMatrix(); // Just doing this at the bottom so we dont overflow the push
   } // Close move func
   ////////////////////////////////////////////////////////////////////////
   // Literally just did this because my sleep deprived brain needed to break up the lines more visually
@@ -146,7 +149,7 @@ class Player {
     
     // takes the sprite_sheet, how big the sprites are, what cell we start at, the fps (potentially the right term?) 
     // and how many frames are in the animation
-    println(target_pos);
+    //println(target_pos);
     PVector center_pos = target_pos.copy();
     center_pos.x -= sprite_size.x / 2;
     center_pos.y -= sprite_size.y / 2;

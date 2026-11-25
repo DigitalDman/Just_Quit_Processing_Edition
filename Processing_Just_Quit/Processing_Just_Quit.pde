@@ -22,3 +22,36 @@ void draw(){
   player.display();
   boss.display();
 } // Close draw
+
+
+void keyPressed(){
+  
+  // Using a fall through switch to detect button inputs (I just like these more than else-ifs & OR's)
+  switch (key){
+    case 'D':
+    case 'd':
+      player.right = true;
+      player.left = false;
+      break;
+    
+    case 'A':
+    case 'a':
+      player.right = false;
+      player.left = true;
+      break;
+    
+    case ' ':
+    case '1':
+        player.jump_slam = true;
+        break;
+  } // Close key switch
+  
+} // Close keyPressed
+
+void keyReleased(){
+  // Only reset the left & right movement if its not a jump button you let go of
+  if (key != ' ' && key != '1'){
+    player.left = false;
+    player.right = false;
+  } // close reset if
+} // close key released

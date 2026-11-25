@@ -8,6 +8,7 @@ class Player {
   boolean slam = false;
   int ground_limit = 325; // Ground is drawn at 315
   float grav_acceleration = 0.1; // This is our gravitational acceleration to start pulling our player down to the ground
+  int jump_velocity = -4;
 
   // Cooldown & I frames \\
   float i_frames_left = 0;
@@ -61,47 +62,82 @@ class Player {
       position.x += velocity.x; // Aaand we move!
       
       // Resets sprite scale
-      pushMatrix();
-      scale(1, 1);
-      position.x = abs(position.x); // Makes sure that the position is reset
+      //pushMatrix();
+      //scale(1, 1);
+      //position.x = abs(position.x); // Makes sure that the position is reset
       newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 2); // Animate out player sprite right
-      popMatrix();
+      //popMatrix();
       
     } else if (left){
       position.x += velocity.x; // Since we flip the scale later on we're still technacly moving 'right'
-      // Flips sprite when your moving left
+      // Flips sprite when your moving left 
+      
       pushMatrix();
       scale(-1, 1);
       position.x = -abs(position.x);
       newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 2); // Animate out player sprite right
-      popMatrix();
+      popMatrix(); // */
       
       //println(position.x);
     } else {
-      newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 10, position, 1); // Animate out player sprite right
-    }// close animation if's
+      //scale(1, 1);
+      position.x = abs(position.x);
+      newAnimation(player_spritesheet, new PVector(30,30), new PVector(0,0), 100000, position, 2); // Animate out player sprite right
+      // Yea so the 100000 thing is 
+    }// close animation if's */
+   
+    //println("");
+    /// Jumping & Slamming \\\
+    //detect if the button was pressed or not
+    if (jump_slam){
+      
+      // Detect if the players grounded
+      if (position.y >= ground_limit){
+          // Sets the player y velocity to their jump velocity, launching them into the air
+          velocity.y = jump_velocity; 
+          
+          
+      } else if (cooldown <= 0 && position.y < ground_limit){
+        /* If you can slam:
+           Increase your gravitational acceleration
+           reset the slam cooldown
+           Set the slam variable to true
+        */
+      
+        grav_acceleration = 0.5;
+        cooldown = cooldown_length;
+        slam = true;
+      } // Close slam attack if
+      
+      jump_slam = false; // Reset this variable just after hitting the button
+      
+    } // close if jump_slam
     
-    
+    // Reset your gravitational acceleration if your grounded
+    if (position.y == ground_limit){
+      grav_acceleration = 0.1;
+    } // Close gravity reset
     
     // Gravity
     position.y += velocity.y; // Pull the player down (or shoot em up depending on if you jump or not)
     velocity.y += grav_acceleration; // And this is where we pull down the player
     
     
-    
-    
     // Limits
     position.y = constrain(position.y, 0, ground_limit);
+    
+    //*
     if (right){
       position.x = constrain(position.x, 0, width - 30 ); // -30 & +30 since our sprites are 30x30
     } else if (left) {
-      position.x = constrain(position.x, 0, -width + 30 ); 
-    } // Close x-limit sets
+      position.x = constrain(position.x, -width, 0 - 30 ); 
+    } // Close x-limit sets */
     
     //println(position.x);
 
   } // Close move func
-
+  ////////////////////////////////////////////////////////////////////////
+  // Literally just did this because my sleep deprived brain needed to break up the lines more visually
 
 
 
@@ -110,6 +146,11 @@ class Player {
     
     // takes the sprite_sheet, how big the sprites are, what cell we start at, the fps (potentially the right term?) 
     // and how many frames are in the animation
+    println(target_pos);
+    PVector center_pos = target_pos.copy();
+    center_pos.x += sprite_size.x / 2;
+    center_pos.y += sprite_size.y / 2;
+    
     
     int collum = int(start_cell.x); // Lable what collum we're at
     
@@ -127,7 +168,7 @@ class Player {
       int( (start_cell.x + spritesheet_row_col.x) * sprite_size.x ),
       int( (start_cell.y + collum) * sprite_size.y ),
       int(sprite_size.x), int(sprite_size.y),
-      int(target_pos.x), int(target_pos.y),
+      int(center_pos.x), int(center_pos.y),
       int(sprite_size.x), int(sprite_size.y) );
      /*
     Creates a copy of sprite sheet & snips out part of it
@@ -136,6 +177,9 @@ class Player {
      The 3rd set of peramiters is where I paste the cut image on my screen
      The final set of peramiters are how big I want the paste to be
      */
+     rectMode(CENTER);
+     fill(0);
+    rect( center_pos.x, center_pos.y, 2, 2);
     
   } // close Split Sprites func
 } // close player class

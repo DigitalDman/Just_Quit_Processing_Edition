@@ -1,4 +1,5 @@
 class Player {
+  
   // Position & movement variables
   PVector position;
   PVector velocity = new PVector(2, 5);

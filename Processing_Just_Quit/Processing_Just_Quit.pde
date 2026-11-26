@@ -1,3 +1,8 @@
+import processing.sound.*;
+
+// MUSIC VARIABLES \\
+SoundFile fightin_time;
+
 // VARIABLES \\
 Player player;
 Boss boss;
@@ -7,8 +12,14 @@ void setup() {
   size(640, 512);
   imageMode(CENTER); // Set the image mode to the center as all our sprite measurements were done from the center
 
+  // Initialize classes \\
   boss = new Boss( new PVector(300, 200) );
   player = new Player( new PVector(width/2, height/2) );
+  
+  // Setting up my battle music
+  fightin_time = new SoundFile(this, "Fightin_Time.mp3" );
+  fightin_time.play(); // Doing this as a temp thing for now
+  fightin_time.loop();
 } // Close setup
 
 

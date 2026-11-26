@@ -19,9 +19,13 @@ void draw() {
   rectMode(CORNERS);
   noStroke();
   rect(0, 350, width, height);
-
+  
+  // Update our player & boss displays
   player.display();
   boss.display();
+  
+  // Feed the boss the player position
+  boss.player_position = player.position.copy();
 } // Close draw
 
 

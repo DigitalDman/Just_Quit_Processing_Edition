@@ -148,10 +148,6 @@ class Player {
     
     //println(position.x);
   } // Close move func
-  ////////////////////////////////////////////////////////////////////////
-  // Literally just did this because my sleep deprived brain needed to break up the lines more visually
-
-
 
   // open newAnimation
   void newAnimation(PImage sprite_sheet, PVector sprite_size, PVector start_cell, int fps, PVector target_pos, int frames) {
@@ -182,20 +178,6 @@ class Player {
       int(sprite_size.x), int(sprite_size.y),
       int(center_pos.x), int(center_pos.y),
       int(sprite_size.x), int(sprite_size.y) );
-     /*
-    Creates a copy of sprite sheet & snips out part of it
-     The 1st 2 peramiters are the top-left corner of what I cut out of the sprite sheet
-     The 2nd 2 peramiters are how big the rectangle I cut is
-     The 3rd set of peramiters is where I paste the cut image on my screen
-     The final set of peramiters are how big I want the paste to be
-     */
-     
-     /*
-     rectMode(CENTER);
-     fill(0);
-    rect( target_pos.x, target_pos.y, 2, 2);
-    fill(255);
-    rect( center_pos.x, center_pos.y, 2, 2); // */
     
   } // close Split Sprites func
 } // close player class

@@ -60,16 +60,33 @@ class Boss{
   //// MOVE FUNCTION
   void move(PVector target_position){
     // So! We want to take a target position because we can use this to move to set locations for every other attack    
-    println(position);
+    //println(position);
+    
     // Find out what direction we want to go in
-    pushMatrix();
-    scale(-1, 1);
-    position.x = -abs(position.x);
-    newAnimation(boss_spritesheet, new PVector(30, 30), new PVector(0,0), 10, position, 2);
-    popMatrix();
+    // Using abs to make sure its the normal positions & not the flipped ones
+    if (abs(target_position.x) < abs(position.x) ){
+      // For when we want to move left!
+      pushMatrix();
+      scale(-1, 1);
+      position.x = -abs(position.x);
+      newAnimation(boss_spritesheet, new PVector(30, 30), new PVector(0,0), 10, position, 2);
+      popMatrix();
+      
+      // Constrain boss position when flipped
+      position.x = constrain(position.x, -width, 0 - 15 );
+    } else {
+      pushMatrix();
+      scale(1, 1);
+      position.x = abs(position.x);
+      newAnimation(boss_spritesheet, new PVector(30, 30), new PVector(0,0), 10, position, 2);
+      popMatrix();
+      
+      // Constrain the bosses position
+      position.x = constrain(position.x, 0, width - 15 );
+    } // Close left-right if
     
     // Move the boss
-    
+    position.x += 1;
    
     // Draw the boss while moving 
     

@@ -7,7 +7,7 @@ void setup() {
   size(640, 512);
   imageMode(CENTER); // Set the image mode to the center as all our sprite measurements were done from the center
 
-  boss = new Boss( new PVector(200, 200) );
+  boss = new Boss( new PVector(300, 200) );
   player = new Player( new PVector(width/2, height/2) );
 } // Close setup
 

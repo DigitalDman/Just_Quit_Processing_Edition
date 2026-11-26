@@ -2,7 +2,7 @@ class Boss{
   
   // Position & movement variables
   PVector position;
-  PVector velocity = new PVector(2, 5);
+  PVector velocity = new PVector(1.2, 5);
   int direction = 1;
   
   // Health bar variables
@@ -12,7 +12,10 @@ class Boss{
   PImage health_fill;
   PImage health_outline;
   PVector bar_size = new PVector(170, 117); // these are the dimentions I drew it at
-  
+    
+  // Spritesheet variables
+  PImage boss_spritesheet;
+  PVector spritesheet_row_col = new PVector(0, 0); // Saving the row & collum of the sprite sheet in a PVector
   
   //// ATTACK VARIABLES \\\\
   int current_attack = 1; // Track what our current attack is
@@ -26,6 +29,8 @@ class Boss{
   Boss(PVector pos){
     position = pos;
     
+    // Setting the sprite_sheet
+    boss_spritesheet = loadImage("boss_spritesheet.png");
     
     // Setting the bossbar sprites \\
     health_outline = loadImage("Boss_Bar_Frame.png");
@@ -42,6 +47,7 @@ class Boss{
   void display(){
     updateBar(); // Call the update bossBar function
     
+    move(player_position);
   } // Close display func
   
   void updateBar(){
@@ -54,31 +60,51 @@ class Boss{
   //// MOVE FUNCTION
   void move(PVector target_position){
     // So! We want to take a target position because we can use this to move to set locations for every other attack    
-    
+    println(position);
     // Find out what direction we want to go in
-    if (target_position.x < position.x){
-      // If we're facing left flip the sprites!
-       pushMatrix();
-       scale(-1, 1);
-       popMatrix();
-       
-       // We also want to update the limits
-       position.x = constrain(position.x, -width, 0 - 15);
-    } else {
-      // Reset the scale if you're going right
-      pushMatrix();
-      scale(1, 1);
-      popMatrix();
-      
-      // Set the contraints while moving right
-      position.x = constrain(position.x, 0, width - 15 );
-    } // Close left-right check
+    pushMatrix();
+    scale(-1, 1);
+    position.x = -abs(position.x);
+    newAnimation(boss_spritesheet, new PVector(30, 30), new PVector(0,0), 10, position, 2);
+    popMatrix();
     
     // Move the boss
-    position.x += velocity.x;
     
-  } // close move func
+   
+    // Draw the boss while moving 
+    
+  } // close move func 
   
-  
+    // Animate sprite sheet function
+    // open newAnimation
+  void newAnimation(PImage sprite_sheet, PVector sprite_size, PVector start_cell, int fps, PVector target_pos, int frames) {
+    
+    // takes the sprite_sheet, how big the sprites are, what cell we start at, the fps (potentially the right term?) 
+    // and how many frames are in the animation
+    //println(target_pos);
+    PVector center_pos = target_pos.copy();
+    center_pos.x -= sprite_size.x / 2;
+    center_pos.y -= sprite_size.y / 2;
+    
+    
+    int collum = int(start_cell.x); // Lable what collum we're at
+    
+    // Update the frame depending on the fps variable
+    if (frameCount % fps == 0) {
+      //println(spritesheet_row_col);
+      spritesheet_row_col.x += 1;
+
+      if (spritesheet_row_col.x == frames) {
+        spritesheet_row_col.x = 0;
+      } // Close frame-reset
+    } // Close row incrimentation
+
+    copy(sprite_sheet,
+      int( (start_cell.x + spritesheet_row_col.x) * sprite_size.x ),
+      int( (start_cell.y + collum) * sprite_size.y ),
+      int(sprite_size.x), int(sprite_size.y),
+      int(center_pos.x), int(center_pos.y),
+      int(sprite_size.x), int(sprite_size.y) );
+  } // close Split Sprites func
   
 } // close player class

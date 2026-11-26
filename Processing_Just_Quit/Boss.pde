@@ -2,7 +2,8 @@ class Boss{
   
   // Position & movement variables
   PVector position;
-  PVector velocity = new PVector(1.2, 5);
+  PVector velocity = new PVector(1.3, 5);
+  PVector acceleration = new PVector(0.1, 0.1);
   int direction = 1;
   
   // Health bar variables
@@ -47,7 +48,7 @@ class Boss{
   void display(){
     updateBar(); // Call the update bossBar function
     
-    move(player_position);
+    move(player_position, velocity.copy());
   } // Close display func
   
   void updateBar(){
@@ -58,7 +59,7 @@ class Boss{
   
   
   //// MOVE FUNCTION
-  void move(PVector target_position){
+  void move(PVector target_position, PVector vel){
     // So! We want to take a target position because we can use this to move to set locations for every other attack    
     //println(position);
     
@@ -72,7 +73,7 @@ class Boss{
       newAnimation(boss_spritesheet, new PVector(30, 30), new PVector(0,0), 10, position, 2);
       popMatrix();
       
-      // Constrain boss position when flipped
+      // Constrain boss position when flips
       position.x = constrain(position.x, -width, 0 - 15 );
     } else {
       pushMatrix();
@@ -86,9 +87,12 @@ class Boss{
     } // Close left-right if
     
     // Move the boss
-    position.x += 1;
-   
-    // Draw the boss while moving 
+    position.x += vel.x;
+    position.y += vel.y;
+    vel.y += acceleration.y;
+    
+    //Limit the bosses y position
+    position.y = constrain(position.y, 0, 340);
     
   } // close move func 
   
